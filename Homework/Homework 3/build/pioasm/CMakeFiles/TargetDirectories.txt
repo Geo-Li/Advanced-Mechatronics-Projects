@@ -1,3 +1,0 @@
-/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/pioasm/CMakeFiles/pioasm.dir
-/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/pioasm/CMakeFiles/edit_cache.dir
-/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/pioasm/CMakeFiles/rebuild_cache.dir
