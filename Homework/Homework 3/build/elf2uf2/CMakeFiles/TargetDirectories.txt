@@ -1,0 +1,5 @@
+/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/elf2uf2/CMakeFiles/elf2uf2.dir
+/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/elf2uf2/CMakeFiles/edit_cache.dir
+/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/elf2uf2/CMakeFiles/rebuild_cache.dir
+/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/elf2uf2/boot_uf2_headers/CMakeFiles/edit_cache.dir
+/Users/geo/Desktop/Education/Northwestern University/2024 Spring/ME433/me433_sandbox/hw2-4/build/elf2uf2/boot_uf2_headers/CMakeFiles/rebuild_cache.dir
