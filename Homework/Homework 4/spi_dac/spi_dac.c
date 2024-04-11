@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "pico/stdlib.h"
-// #include "pico/binary_info.h"
 #include "hardware/spi.h"
 
 static uint sine_wave[50];
