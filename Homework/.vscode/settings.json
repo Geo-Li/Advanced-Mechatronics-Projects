@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.yarnproject": "jsonc",
+        "stdio.h": "c",
+        "font.h": "c"
+    }
+}

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
@@ -53,7 +52,7 @@ int main()
         { // if gp0 is low
             set_gp7(true);
         }
-        // poll every 500ms
+        // poll every 250ms
         sleep_ms(250);
     }
 }
