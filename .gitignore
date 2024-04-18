@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,macos
-# Edit at https://www.toptal.com/developers/gitignore?templates=c,visualstudiocode,macos
+# Created by https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,macos,video
+# Edit at https://www.toptal.com/developers/gitignore?templates=c,visualstudiocode,macos,video
 
 ### C ###
 # Prerequisites
@@ -55,6 +55,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Result build folders
+**/build/
+
 ### macOS ###
 # General
 .DS_Store
@@ -107,6 +110,22 @@ Temporary Items
 .history
 .ionide
 
-**/build/
+### Video ###
+*.3g2
+*.3gp
+*.asf
+*.asx
+*.avi
+*.flv
+*.mkv
+*.mov
+*.mp4
+*.mpg
+*.ogv
+*.rm
+*.swf
+*.vob
+*.wmv
+*.webm
 
 # End of https://www.toptal.com/developers/gitignore/api/c,visualstudiocode,macos
