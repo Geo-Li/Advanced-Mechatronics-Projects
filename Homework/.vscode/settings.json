@@ -2,6 +2,7 @@
     "files.associations": {
         "*.yarnproject": "jsonc",
         "stdio.h": "c",
-        "font.h": "c"
+        "font.h": "c",
+        "ssd1306.h": "c"
     }
 }

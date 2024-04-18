@@ -5,15 +5,19 @@
 #include "hardware/i2c.h"
 #include "hardware/adc.h"
 
-// device has default bus address of 0x76
+// define general settings for initializations and operations
 #define BUFFER_SIZE 50
-#define ADC_RANGE 4090
+#define ADC_RANGE 4096
+// define charater or message boundaries for the screen
 #define COL 128
 #define ROW 32
 #define CHAR_COL 5 // 7
 #define CHAR_ROW 8 // 10
-
-static bool DEBUG = false;
+// define pins' functionalities on Pico
+#define LED_PIN PICO_DEFAULT_LED_PIN
+#define ADC_PIN 26
+#define PICO_I2C_SDA_PIN 12
+#define PICO_I2C_SCL_PIN 13
 
 static void draw_all_pixels(void);
 static void draw_char(uint x, uint y, char letter);
@@ -23,12 +27,15 @@ int main()
 {
     stdio_init_all();
 
-    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
-    const uint ADC_PIN = 26;
-
     // Initialize the LED on Pico
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    // Initialize SDA and SCL pins on Pico
+    gpio_init(PICO_I2C_SDA_PIN);
+    gpio_init(PICO_I2C_SCL_PIN);
+    gpio_set_function(PICO_I2C_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(PICO_I2C_SCL_PIN, GPIO_FUNC_I2C);
 
     // Initialize ADC
     adc_init();             // init the adc module
@@ -37,13 +44,6 @@ int main()
 
     // Initialize I2C
     i2c_init(i2c_default, 100 * 1000);
-    // Initialize SDA and SCL pins on Pico
-    const uint PICO_I2C_SDA_PIN = 12;
-    const uint PICO_I2C_SCL_PIN = 13;
-    gpio_init(PICO_I2C_SDA_PIN);
-    gpio_init(PICO_I2C_SCL_PIN);
-    gpio_set_function(PICO_I2C_SDA_PIN, GPIO_FUNC_I2C);
-    gpio_set_function(PICO_I2C_SCL_PIN, GPIO_FUNC_I2C);
 
     // Initialize SSD1306
     ssd1306_setup();
@@ -126,5 +126,4 @@ void draw_string(uint x, uint y, char *message)
         draw_char(x + index * (CHAR_COL + 1), y * (CHAR_ROW + 1), message[index]);
         index++;
     }
-    ssd1306_update();
 }

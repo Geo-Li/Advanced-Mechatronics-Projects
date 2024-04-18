@@ -4,7 +4,7 @@
 #include "hardware/adc.h"
 
 #define BUFFER_SIZE 100
-#define ADC_RANGE 4090
+#define ADC_RANGE 4096
 
 int main()
 {
