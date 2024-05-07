@@ -65,7 +65,6 @@ void display_typed_chars()
 
 int main()
 {
-    char message[BUFFER_SIZE];
     stdio_init_all();
 
     // Initialize the LED on Pico
