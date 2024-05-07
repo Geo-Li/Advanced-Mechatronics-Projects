@@ -9,10 +9,10 @@ def main() -> int:
         line = serial_port.readline()
         print("Read in: " + str(line) + "(" + str(type(line)) + ")")
         if len(line) > 0:
-            num = float(line)
+            num = int(line)
             num_str = str(num)
             print("Converted to: " + num_str + "(" + str(type(num)) + ")")
-            serial_port.write((num_str+'\n\r').encode())
+            serial_port.write((num_str+'\n').encode())
 
     return 0
 
