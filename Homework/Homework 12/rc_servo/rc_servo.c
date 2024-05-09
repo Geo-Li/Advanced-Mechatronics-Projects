@@ -2,9 +2,9 @@
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 
-#define PWM_PIN 26   // the built in LED on the Pico
-#define DURATION 2   // Set the duration of the motion
-#define INTERVAL 100 // Update every 100ms
+#define PWM_PIN 26  // the built in LED on the Pico
+#define DURATION 2  // Set the duration of the motion
+#define INTERVAL 10 // Update every 100ms
 
 static volatile short unsigned int wrap = 62500; // when to rollover, must be less than 65535
 
@@ -22,7 +22,7 @@ int main()
     pwm_set_wrap(slice_num, wrap);
     pwm_set_enabled(slice_num, true); // turn on the PWM
 
-    int start_duty = 2.5 / 100 * wrap;
+    int start_duty = 2.1 / 100 * wrap;
     int end_duty = 12.5 / 100 * wrap;
     int num_steps = DURATION * 1000 / INTERVAL;
     int step = (end_duty - start_duty) / num_steps;
