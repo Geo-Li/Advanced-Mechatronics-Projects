@@ -42,7 +42,7 @@ int main()
         }
         // Turns off the LED
         gpio_put(LED_PIN, 0);
-        // Asks the user to enter a number of analog samples to take,
+        // Asks the user to enter a number of analog sample to take,
         // between 1 and 100
         printf("Please enter a number of analog samples between 1 and 100: \r\n");
         // Reads the number entered by the user

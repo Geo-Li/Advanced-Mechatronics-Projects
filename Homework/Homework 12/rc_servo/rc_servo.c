@@ -1,12 +1,13 @@
-#include <time.h>
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 
-#define PWM_PIN 26  // the built in LED on the Pico
+#define PWM_PIN 26  // PWM pin for rc servo
 #define DURATION 2  // Set the duration of the motion
 #define INTERVAL 10 // Update every 100ms
 
-static volatile short unsigned int wrap = 62500; // when to rollover, must be less than 65535
+// The PWM counters use the 125MHz system clock as a source
+static const float divider = 40;              // must be between 1-255
+static const short unsigned int wrap = 62500; // when to rollover, must be less than 65535
 
 int angle_to_duty_cycle(int angle);
 
@@ -15,10 +16,9 @@ int main()
     // Initialization
     stdio_init_all();
     // Servo PWM signal has to be 50Hz
-    gpio_set_function(PWM_PIN, GPIO_FUNC_PWM);               // Set the LED Pin to be PWM
+    gpio_set_function(PWM_PIN, GPIO_FUNC_PWM);               // Set the PWM pin
     unsigned int slice_num = pwm_gpio_to_slice_num(PWM_PIN); // Get PWM slice number
-    float div = 40;                                          // must be between 1-255
-    pwm_set_clkdiv(slice_num, div);                          // Set the clock divider
+    pwm_set_clkdiv(slice_num, divider);                          // Set the clock divider
     pwm_set_wrap(slice_num, wrap);
     pwm_set_enabled(slice_num, true); // turn on the PWM
 

@@ -5,6 +5,7 @@
         "font.h": "c",
         "ssd1306.h": "c",
         "variant": "c",
-        "chrono": "c"
+        "chrono": "c",
+        "time.h": "c"
     }
 }
