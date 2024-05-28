@@ -6,6 +6,7 @@
         "ssd1306.h": "c",
         "variant": "c",
         "chrono": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "wheel_encoder.h": "c"
     }
 }
