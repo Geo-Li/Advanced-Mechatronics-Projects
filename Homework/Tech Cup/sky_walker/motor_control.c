@@ -1,23 +1,8 @@
 #include <stdio.h>
+#include "motor_control.h"
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 
-// Define pins' functionalities on Pico
-#define LEFT_PWM_PIN 6
-#define RIGHT_PWM_PIN 7
-#define LEFT_IO_PIN 14
-#define RIGHT_IO_PIN 15
-#define REVERSE_BUTTON_PIN 17
-#define READ_BUTTON_PIN 5
-// Define for speed control
-#define LEFT_MOST_LINE 0
-#define RIGHT_MOST_LINE 100
-
-typedef struct duty_cycles
-{
-    int left;
-    int right;
-} duty_cycles;
 
 static int line_threshold = 30;
 // The PWM counters use the 125MHz system clock as a source
@@ -28,18 +13,7 @@ static const short unsigned int wrap = 62500; // when to rollover, must be less 
 static const uint full_speed = wrap;
 static volatile bool reversed_left = true;
 
-struct duty_cycles calc_duty_cycles(int line_pos);
-bool switch_state(bool state, int button_pin);
-
-int main()
-{
-    // Initialization
-    stdio_init_all();
-    while (!stdio_usb_connected())
-    {
-        sleep_ms(100);
-    }
-
+void init_motor() {
     unsigned int slice_num;
     // Set PWM for the left motor
     gpio_set_function(LEFT_PWM_PIN, GPIO_FUNC_PWM);  // Set the PWM pin
@@ -64,14 +38,20 @@ int main()
     gpio_init(REVERSE_BUTTON_PIN);
     gpio_set_dir(REVERSE_BUTTON_PIN, GPIO_IN);
     gpio_pull_up(REVERSE_BUTTON_PIN);
-    // Initialize the button for reread the line position
-    gpio_init(READ_BUTTON_PIN);
-    gpio_set_dir(READ_BUTTON_PIN, GPIO_IN);
-    gpio_pull_up(READ_BUTTON_PIN);
+}
+
+int main()
+{
+    // Initialization
+    stdio_init_all();
+    while (!stdio_usb_connected())
+    {
+        sleep_ms(100);
+    }
 
     printf("Start!\n");
     int line_pos;
-    struct duty_cycles duty_cycles;
+    struct motor_duty_cycles duty_cycles;
 
     while (true)
     {
@@ -110,7 +90,7 @@ int main()
     return 0;
 }
 
-struct duty_cycles calc_duty_cycles(int line_pos)
+struct motor_duty_cycles calc_duty_cycles(int line_pos)
 {
     // For the simplest version, the controller is proportional, no derivative or integral terms.
     // But the curve will be nonlinear
