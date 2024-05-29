@@ -17,7 +17,9 @@
 #define UART_TX_PIN 8
 #define UART_RX_PIN 9
 
-// void get_line_position();
+extern volatile int line_position;
+
+void get_line_position();
 void init_uart();
 
 #endif

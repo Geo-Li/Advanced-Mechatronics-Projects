@@ -5,6 +5,7 @@
 
 volatile int data_index = 0;
 volatile char pi_zero_data[BUFFER_SIZE];
+volatile int line_position;
 
 // RX interrupt handler
 void get_line_position()
@@ -17,7 +18,7 @@ void get_line_position()
             // Print data on screen that is sent from Pi Zero
             pi_zero_data[data_index] = '\0'; // Put the null character to the end of string
             // Convert string to integer
-            int line_position = atoi(pi_zero_data);
+            line_position = atoi(pi_zero_data);
             data_index = 0;
             // printf("Send from Pi Zero: %d\n\r", line_position);
         }

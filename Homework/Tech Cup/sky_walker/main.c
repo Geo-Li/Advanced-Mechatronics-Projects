@@ -71,7 +71,6 @@ int main()
     uint last_right_val;
     uint curr_left_val;
     uint curr_right_val;
-    int line_position;
     struct motor_duty_cycles duty_cycles;
 
     printf("Program Started!\n");
@@ -155,7 +154,6 @@ int main()
             gpio_put(LEFT_IO_PIN, 0);
         }
         // Reads the number entered by the user
-        scanf("%d", &line_position);
         printf("Line PositionL %d", line_position);
         duty_cycles = calc_duty_cycles(line_position);
         // printf("Detected PWM for left: %d, for right: %d\r\n", duty_cycles.left, duty_cycles.right);

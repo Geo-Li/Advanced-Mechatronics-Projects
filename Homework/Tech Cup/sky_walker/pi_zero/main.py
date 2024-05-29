@@ -20,9 +20,9 @@ def main():
         line_position = lineIdentifier.process_image(image)
         print("Line position is:", line_position)
         zeroToPico.sned_message(line_position)
-        pic_count += 1
-        if pic_count > 10:
-            break
+        # pic_count += 1
+        # if pic_count > 10:
+        #     break
     
     
     
