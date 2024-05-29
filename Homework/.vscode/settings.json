@@ -7,6 +7,7 @@
         "variant": "c",
         "chrono": "c",
         "time.h": "c",
-        "wheel_encoder.h": "c"
+        "wheel_encoder.h": "c",
+        "zero_listener.h": "c"
     }
 }

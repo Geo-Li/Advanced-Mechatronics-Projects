@@ -6,6 +6,8 @@ add_executable(sky_walker
     ssd1306.c
     i2c_oled.c
     wheel_encoder.c
+    motor_control.c
+    zero_listener.c
 )
 
 # Include the current source directory for header files
@@ -16,6 +18,8 @@ target_link_libraries(sky_walker
     pico_stdlib
     hardware_i2c
     hardware_adc
+    hardware_pwm
+    hardware_uart
 )
 
 # Enable USB output, disable UART output

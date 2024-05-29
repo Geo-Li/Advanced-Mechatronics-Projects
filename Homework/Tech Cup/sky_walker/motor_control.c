@@ -1,19 +1,15 @@
-#include <stdio.h>
 #include "motor_control.h"
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
 
-
-static int line_threshold = 30;
+static int line_threshold = 5;
 // The PWM counters use the 125MHz system clock as a source
-static const float divider = 1;               // must be between 1-255
-static const short unsigned int wrap = 62500; // when to rollover, must be less than 65535
+const float divider = DIVIDER;               // must be between 1-255
+const short unsigned int wrap = WRAP; // when to rollover, must be less than 65535
 // Since the speed is related to PWM, and PWM is ranged by wrap,
 // let's assign wrap to full_speed for readability
-static const uint full_speed = wrap;
-static volatile bool reversed_left = true;
+const uint full_speed = wrap;
 
-void init_motor() {
+void init_motor()
+{
     unsigned int slice_num;
     // Set PWM for the left motor
     gpio_set_function(LEFT_PWM_PIN, GPIO_FUNC_PWM);  // Set the PWM pin
@@ -40,72 +36,22 @@ void init_motor() {
     gpio_pull_up(REVERSE_BUTTON_PIN);
 }
 
-int main()
-{
-    // Initialization
-    stdio_init_all();
-    while (!stdio_usb_connected())
-    {
-        sleep_ms(100);
-    }
-
-    printf("Start!\n");
-    int line_pos;
-    struct motor_duty_cycles duty_cycles;
-
-    while (true)
-    {
-        reversed_left = switch_state(reversed_left, REVERSE_BUTTON_PIN);
-        if (reversed_left)
-        {
-            gpio_put(LEFT_IO_PIN, 1);
-        }
-        else
-        {
-            gpio_put(LEFT_IO_PIN, 0);
-        }
-        if (!gpio_get(READ_BUTTON_PIN))
-        {
-            // Asks the user to enter a number for motor control,
-            // it between 1 and 100
-            printf("Please enter a number for motor control (between 1 and 100): \r\n");
-            // Reads the number entered by the user
-            scanf("%d", &line_pos);
-            duty_cycles = calc_duty_cycles(line_pos);
-            printf("Detected PWM for left: %d, for right: %d\r\n", duty_cycles.left, duty_cycles.right);
-            // Pass the duty cycle calculated and the digital output information to the left wheel
-            if (reversed_left)
-            {
-                pwm_set_gpio_level(LEFT_PWM_PIN, full_speed - duty_cycles.left);
-            }
-            else
-            {
-                pwm_set_gpio_level(LEFT_PWM_PIN, duty_cycles.left);
-            }
-            // Pass the duty cycle calculated and the digital output information to the left wheel
-            pwm_set_gpio_level(RIGHT_PWM_PIN, duty_cycles.right);
-            gpio_put(RIGHT_IO_PIN, 0);
-        }
-    }
-    return 0;
-}
-
-struct motor_duty_cycles calc_duty_cycles(int line_pos)
+struct motor_duty_cycles calc_duty_cycles(int line_position)
 {
     // For the simplest version, the controller is proportional, no derivative or integral terms.
     // But the curve will be nonlinear
-    struct duty_cycles duty_cycles;
+    struct motor_duty_cycles duty_cycles;
     float gradient = full_speed / line_threshold;
-    if (line_pos < line_threshold)
+    if (line_position < line_threshold)
     {
-        duty_cycles.left = gradient * line_pos;
+        duty_cycles.left = gradient * line_position;
         duty_cycles.right = full_speed;
         return duty_cycles;
     }
-    else if (line_pos > RIGHT_MOST_LINE - line_threshold)
+    else if (line_position > RIGHT_MOST_LINE - line_threshold)
     {
         duty_cycles.left = full_speed;
-        duty_cycles.right = -gradient * line_pos + gradient * RIGHT_MOST_LINE;
+        duty_cycles.right = -gradient * line_position + gradient * RIGHT_MOST_LINE;
         return duty_cycles;
     }
     else
