@@ -5,11 +5,8 @@ from picamera.array import PiRGBArray
 
 class LineIdentifier:
     # Define global variables for the class
-    iso_settings = [100,200,400,800,1600]
-    
-    """
-        Initialize the class
-    """
+    iso_settings = [100, 200, 400, 800, 1600]
+
     def __init__(self, resolution, framerate, color=False, iso_index=3):
         self.camera = PiCamera(resolution=resolution, framerate=framerate)
         if not color:
@@ -17,13 +14,13 @@ class LineIdentifier:
             self.camera.iso = self.iso_settings[iso_index]
         else:
             pass
-        
+
     def capture_image(self):
         raw_capture = PiRGBArray(self.camera)
         self.camera.capture(raw_capture, format="bgr")
         image = raw_capture.array
         return image
-    
+
     def process_image(self, image):
         # Convert the image to grayscale
         gray_image = np.dot(image[..., :3], [0.2989, 0.5870, 0.1140])
@@ -37,19 +34,20 @@ class LineIdentifier:
         
         # Find the x-coordinate of the line center
         height, width = edges.shape
-        bottom_half = edges[height//2:, :]
+        bottom_half = edges[height // 2:, :]
         column_sums = bottom_half.sum(axis=0)
         line_center = np.argmax(column_sums)
         
-        return line_center
+        # Scale the line center to a value between 0 and 20
+        line_position = int((line_center / width) * 20)
         
-        
+        return line_position
+
 if __name__ == "__main__":
-    lineIdentifier = LineIdentifier(resolution=(1920, 10280), 
-                                    framerate=30, 
+    lineIdentifier = LineIdentifier(resolution=(640, 480), 
+                                    framerate=10, 
                                     color=False, 
                                     iso_index=4)
     image = lineIdentifier.capture_image()
-    line_center = lineIdentifier.process_image(image)
-    print("Detected line center:", line_center)
-    
+    line_position = lineIdentifier.process_image(image)
+    print("Detected line position (0-20):", line_position)
