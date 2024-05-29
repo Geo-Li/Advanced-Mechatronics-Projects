@@ -156,6 +156,7 @@ int main()
         }
         // Reads the number entered by the user
         scanf("%d", &line_position);
+        printf("Line PositionL %d", line_position);
         duty_cycles = calc_duty_cycles(line_position);
         // printf("Detected PWM for left: %d, for right: %d\r\n", duty_cycles.left, duty_cycles.right);
         // Pass the duty cycle calculated and the digital output information to the left wheel

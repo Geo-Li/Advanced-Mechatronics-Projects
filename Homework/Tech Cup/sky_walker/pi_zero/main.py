@@ -18,6 +18,7 @@ def main():
     while True:
         image = lineIdentifier.capture_image()
         line_position = lineIdentifier.process_image(image)
+        print("Line position is:", line_position)
         zeroToPico.sned_message(line_position)
         pic_count += 1
         if pic_count > 10:
