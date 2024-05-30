@@ -28,6 +28,7 @@ typedef struct motor_duty_cycles
 
 extern const uint full_speed;
 extern const uint target_speed;
+extern const uint left_speed;
 
 void init_motor();
 struct motor_duty_cycles calc_duty_cycles(int line_position);

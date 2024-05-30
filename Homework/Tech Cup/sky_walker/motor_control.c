@@ -7,7 +7,8 @@ const short unsigned int wrap = 62500; // when to rollover, must be less than 65
 // Since the speed is related to PWM, and PWM is ranged by wrap,
 // let's assign wrap to full_speed for readability
 const uint full_speed = wrap;
-const uint target_speed = wrap * 0.70;
+const uint target_speed = wrap * 0.50;
+const uint left_speed = wrap * 0.5;
 
 void init_motor()
 {
@@ -67,8 +68,8 @@ struct motor_duty_cycles calc_duty_cycles(int line_position)
     // output += speed_error_left - speed_error_right;
 
     // Calculate the duty cycles
-    duty_cycles.left = target_speed - output;
-    duty_cycles.right = target_speed + output;
+    duty_cycles.left = target_speed * (1 - output);
+    duty_cycles.right = target_speed * (1 + output);
 
     // Limit duty cycles to acceptable range
     if (duty_cycles.left > target_speed)

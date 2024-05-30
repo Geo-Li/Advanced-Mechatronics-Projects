@@ -18,9 +18,9 @@ def main():
     while True:
         image = lineIdentifier.capture_image()
         # start_time = time.time()
-        line_position = lineIdentifier.process_image(image)
+        line_position = lineIdentifier.process_image(image, threshold=150)
         # end_time = time.time()
-        # print("Line position is:", line_position)
+        print("Line position is:", line_position)
         # print("Time it takes:", (end_time - start_time))
         # print("Frame Rate:", (1/(end_time - start_time)))
         zeroToPico.sned_message(line_position)
