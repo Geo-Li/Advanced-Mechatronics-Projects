@@ -4,10 +4,10 @@ from zero_to_pico import *
 
 def init():
     return \
-        LineIdentifier(resolution = (640, 480), 
+        LineIdentifier(resolution = (32, 32), 
                                     framerate = 30, 
                                     color = False, 
-                                    iso_index = 3),\
+                                    iso_index = 2),\
         ZeroToPico()
 
 def main():
