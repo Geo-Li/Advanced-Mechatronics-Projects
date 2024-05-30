@@ -1,6 +1,6 @@
+import time
 from arducam import *
 from zero_to_pico import *
-
 
 def init():
     return \
@@ -17,8 +17,11 @@ def main():
     
     while True:
         image = lineIdentifier.capture_image()
+        start_time = time.time()
         line_position = lineIdentifier.process_image(image)
+        end_time = time.time()
         print("Line position is:", line_position)
+        print("Time it takes:", (end_time - start_time))
         zeroToPico.sned_message(line_position)
         # pic_count += 1
         # if pic_count > 10:

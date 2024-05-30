@@ -1,12 +1,13 @@
 #include "motor_control.h"
 
-static int line_threshold = 5;
+static int line_threshold = 7;
 // The PWM counters use the 125MHz system clock as a source
-const float divider = DIVIDER;               // must be between 1-255
-const short unsigned int wrap = WRAP; // when to rollover, must be less than 65535
+const float divider = 1;               // must be between 1-255
+const short unsigned int wrap = 62500; // when to rollover, must be less than 65535
 // Since the speed is related to PWM, and PWM is ranged by wrap,
 // let's assign wrap to full_speed for readability
 const uint full_speed = wrap;
+const uint target_speed = wrap * 0.70;
 
 void init_motor()
 {
@@ -36,30 +37,53 @@ void init_motor()
     gpio_pull_up(REVERSE_BUTTON_PIN);
 }
 
+float cal_wheel_speed(int encoder_count, float time_interval)
+{
+    float wheel_circumference = M_PI * WHEEL_DIAMETER;
+    float revolutions = (float)encoder_count / ENCODER_RESOLUTION;
+    float distance = revolutions * wheel_circumference;
+    float speed = distance / time_interval; // Speed in meters per second
+    return speed;
+}
+
 struct motor_duty_cycles calc_duty_cycles(int line_position)
 {
-    // For the simplest version, the controller is proportional, no derivative or integral terms.
-    // But the curve will be nonlinear
+    // Apply the PID control to line position
     struct motor_duty_cycles duty_cycles;
-    float gradient = full_speed / line_threshold;
-    if (line_position < line_threshold)
-    {
-        duty_cycles.left = gradient * line_position;
-        duty_cycles.right = full_speed;
-        return duty_cycles;
-    }
-    else if (line_position > RIGHT_MOST_LINE - line_threshold)
-    {
-        duty_cycles.left = full_speed;
-        duty_cycles.right = -gradient * line_position + gradient * RIGHT_MOST_LINE;
-        return duty_cycles;
-    }
-    else
-    {
-        duty_cycles.left = full_speed;
-        duty_cycles.right = full_speed;
-        return duty_cycles;
-    }
+    float left_speed = cal_wheel_speed(left_encoder_count, 0.2);
+    float right_speed = cal_wheel_speed(right_encoder_count, 0.2);
+
+    // We always want to center the line
+    float error = line_position - (RIGHT_MOST_LINE / 2);
+    integral += error;
+    float derivative = error - previous_error;
+
+    // PID output
+    float output = apply_pid_control(error, integral, derivative);
+
+    // Adjust the output based on encoder feedback
+    // float speed_error_left = DESIRED_SPEED - left_speed;
+    // float speed_error_right = DESIRED_SPEED - right_speed;
+    // output += speed_error_left - speed_error_right;
+
+    // Calculate the duty cycles
+    duty_cycles.left = target_speed - output;
+    duty_cycles.right = target_speed + output;
+
+    // Limit duty cycles to acceptable range
+    if (duty_cycles.left > target_speed)
+        duty_cycles.left = target_speed;
+    if (duty_cycles.left < 0)
+        duty_cycles.left = 0;
+    if (duty_cycles.right > target_speed)
+        duty_cycles.right = target_speed;
+    if (duty_cycles.right < 0)
+        duty_cycles.right = 0;
+
+    previous_error = error;
+    left_encoder_count = 0;
+    right_encoder_count = 0;
+    return duty_cycles;
 }
 
 bool switch_state(bool state, int button_pin)

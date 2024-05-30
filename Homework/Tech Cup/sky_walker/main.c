@@ -1,22 +1,18 @@
 // Include all header files here
 #include <stdio.h>
 #include <stdlib.h>
+#include "hardware/i2c.h"
+#include "hardware/adc.h"
 #include "ssd1306.h"
 #include "i2c_oled.h"
 #include "wheel_encoder.h"
 #include "motor_control.h"
 #include "zero_listener.h"
-#include "pico_info.h"
-#include "hardware/i2c.h"
-#include "hardware/adc.h"
 
 // define general settings for initializations and operations
 #define BUFFER_SIZE 50
 #define BLINK_INTERVAL 100
 
-volatile int left_wheel_count = 0;
-volatile int right_wheel_count = 0;
-static const uint full_speed = WRAP;
 static volatile bool reversed_left = true;
 
 int main()
@@ -66,11 +62,6 @@ int main()
 
     // Initialize local variables
     char message[BUFFER_SIZE];
-    struct encoder_info e_info = update_encoder_info(e_info);
-    uint last_left_val;
-    uint last_right_val;
-    uint curr_left_val;
-    uint curr_right_val;
     struct motor_duty_cycles duty_cycles;
 
     printf("Program Started!\n");
@@ -106,32 +97,7 @@ int main()
         Read from light sensor
         ##############################
         */
-        // // Turn on the LED
-        // gpio_put(BRIGHT_LED_PIN, 1);
-
-        // uint last_left_val = e_info.left_adc_val;
-        // uint last_right_val = e_info.right_adc_val;
-
-        // // Read the light sensor value
-        // e_info = update_encoder_info(e_info);
-        // curr_left_val = e_info.left_adc_val;
-        // curr_right_val = e_info.right_adc_val;
-
-        // // Decide if we have detected the increment of wheel position
-        // if (abs(curr_left_val - last_left_val) > ADC_VARIANCE_THRESHOLD)
-        // {
-        //     left_wheel_count++;
-        // }
-        // if (abs(curr_right_val - last_right_val) > ADC_VARIANCE_THRESHOLD)
-        // {
-        //     right_wheel_count++;
-        // }
-
-        // printf("Left wheel position: %u\n", left_wheel_count);
-        // printf("Right wheel position: %u\n", right_wheel_count);
-
-        // // Turn off the LED
-        // gpio_put(BRIGHT_LED_PIN, 0);
+        update_encoder_count();
         /*
         ##############################
         End of blinking the bright led and
@@ -154,7 +120,7 @@ int main()
             gpio_put(LEFT_IO_PIN, 0);
         }
         // Reads the number entered by the user
-        printf("Line PositionL %d", line_position);
+        printf("Line Position: %d", line_position);
         duty_cycles = calc_duty_cycles(line_position);
         // printf("Detected PWM for left: %d, for right: %d\r\n", duty_cycles.left, duty_cycles.right);
         // Pass the duty cycle calculated and the digital output information to the left wheel
@@ -175,7 +141,7 @@ int main()
         ##############################
         */
 
-        // poll every 250ms
+        // poll every BLINK_INTERVAL ms
         gpio_put(LED_PIN, 0);
         sleep_ms(BLINK_INTERVAL);
     }

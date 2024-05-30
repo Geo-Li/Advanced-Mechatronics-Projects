@@ -1,4 +1,5 @@
 import numpy as np
+from PIL import Image
 from picamera import PiCamera
 from picamera.array import PiYUVArray
 
@@ -16,14 +17,12 @@ class LineIdentifier:
 
     def capture_image(self):
         self.camera.capture("image.jpg")
-        raw_capture = PiYUVArray(self.camera)
-        self.camera.capture(raw_capture, format="yuv")
-        image = raw_capture.array[:, :, 0]  # Extract the grayscale channel
+        image = Image.open("image.jpg").convert('L')  # Convert to grayscale
         return image
 
     def process_image(self, image, threshold = 128):
         # Apply a binary threshold to get a binary image
-        binary_image = (image > threshold).astype(np.uint8)
+        binary_image = (np.array(image) > threshold).astype(np.uint8)
         
         # Find the x-coordinate of the line center in the bottom half of the image
         height, width = binary_image.shape

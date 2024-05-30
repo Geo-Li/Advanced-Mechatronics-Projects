@@ -8,6 +8,7 @@
         "chrono": "c",
         "time.h": "c",
         "wheel_encoder.h": "c",
-        "zero_listener.h": "c"
+        "zero_listener.h": "c",
+        "stdlib.h": "c"
     }
 }

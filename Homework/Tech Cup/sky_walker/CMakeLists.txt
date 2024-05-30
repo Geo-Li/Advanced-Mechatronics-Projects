@@ -8,6 +8,7 @@ add_executable(sky_walker
     wheel_encoder.c
     motor_control.c
     zero_listener.c
+    pid_control.c
 )
 
 # Include the current source directory for header files
