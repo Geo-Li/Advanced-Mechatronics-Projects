@@ -18,11 +18,12 @@ static volatile bool reversed_left = true;
 int main()
 {
     stdio_init_all();
+    sleep_ms(200);
     // Secure the USB connection
-    while (!stdio_usb_connected())
-    {
-        sleep_ms(100);
-    }
+    // while (!stdio_usb_connected())
+    // {
+    //     sleep_ms(100);
+    // }
 
     /*
     ##############################
