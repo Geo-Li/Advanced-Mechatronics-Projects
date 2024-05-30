@@ -22,6 +22,7 @@ def main():
         end_time = time.time()
         print("Line position is:", line_position)
         print("Time it takes:", (end_time - start_time))
+        print("Frame Rate:", (1/(end_time - start_time)))
         zeroToPico.sned_message(line_position)
         # pic_count += 1
         # if pic_count > 10:
