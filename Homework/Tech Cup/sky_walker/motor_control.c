@@ -7,7 +7,7 @@ const short unsigned int wrap = 62500; // when to rollover, must be less than 65
 // Since the speed is related to PWM, and PWM is ranged by wrap,
 // let's assign wrap to full_speed for readability
 const uint full_speed = wrap;
-const uint target_speed = wrap * 0.40;
+const uint target_speed = wrap * 0.50;
 const uint left_speed = wrap * 0.5;
 
 void init_motor()

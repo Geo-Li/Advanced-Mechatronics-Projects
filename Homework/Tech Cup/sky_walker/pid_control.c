@@ -1,9 +1,9 @@
 #include "pid_control.h"
 
 // PID constants
-static const float Kp = 0.6;
+static const float Kp = 0.1;
 static const float Ki = 0.0;
-static const float Kd = 0.3;
+static const float Kd = 0.1;
 // PID variables
 volatile float integral = 0;
 volatile float previous_error = 0;
