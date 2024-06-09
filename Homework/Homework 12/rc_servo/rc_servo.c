@@ -18,7 +18,7 @@ int main()
     // Servo PWM signal has to be 50Hz
     gpio_set_function(PWM_PIN, GPIO_FUNC_PWM);               // Set the PWM pin
     unsigned int slice_num = pwm_gpio_to_slice_num(PWM_PIN); // Get PWM slice number
-    pwm_set_clkdiv(slice_num, divider);                          // Set the clock divider
+    pwm_set_clkdiv(slice_num, divider);                      // Set the clock divider
     pwm_set_wrap(slice_num, wrap);
     pwm_set_enabled(slice_num, true); // turn on the PWM
 
